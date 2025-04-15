@@ -2,10 +2,18 @@ const express = require("express")
 const app = express();
 require('dotenv').config();
 const database = require("./config/database");
-database.connect();
+const bodyParser = require('body-parser')
+const routeVer1 = require("./api/v1/routes/index.router");
 const port =  process.env.PORT;
-const route = require("./api/v1/routes/index.router");
-route(app);
+
+
+
+database.connect();
+
+// parse application/json
+app.use(bodyParser.json())
+
+routeVer1(app);
 app.listen(port, () => {
     console.log(`App listening on port ${port} `)
 })

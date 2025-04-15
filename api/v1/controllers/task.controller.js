@@ -7,13 +7,13 @@ module.exports.index = async (req, res) => {
     const find = {
         deleted: false
     };
-    if(req.query.status){
+    if (req.query.status) {
         find.status = req.query.status;
     };
 
     // sort
     const sort = {};
-    if(req.query.sortKey && req.query.sortValue){
+    if (req.query.sortKey && req.query.sortValue) {
         sort[req.query.sortKey] = req.query.sortValue
     }
     // end sort
@@ -31,7 +31,7 @@ module.exports.index = async (req, res) => {
     //end panigation
 
     //search
-    if(req.query.keyword){
+    if (req.query.keyword) {
         const keyword = searchHelper(req.query);
         find.title = keyword.RegExp;
     }
@@ -48,4 +48,29 @@ module.exports.detail = async (req, res) => {
         deleted: false
     })
     res.json(task)
+}
+
+//[PATCH] /change-status
+module.exports.changeStatus = async (req, res) => {
+    const id = req.params.id;
+    console.log(req.body)
+    const status = req.body.status;
+    if (status) {
+        try {
+            await Tasks.updateOne({
+                _id: id
+            }, {
+                status: status
+            });
+            res.json({
+                code: 200,
+                message: "Cập nhật trạng thái thành công"
+            })
+        } catch (error) {
+            res.json({
+                code: 400,
+                message: "Cập nhật thất bại"
+            })
+        }
+    }
 }
