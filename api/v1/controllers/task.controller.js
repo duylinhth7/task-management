@@ -101,3 +101,22 @@ module.exports.changeMutil = async (req, res) => {
     }
 
 }
+
+//PATCH /create
+module.exports.create = async (req, res) => {
+    try {
+        if(req.body){
+            const newTask = Tasks(req.body);
+            await newTask.save();
+            res.json({
+                code: 200,
+                message: "Tạo công việc mới thành công"
+            })
+        }
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Tạo công việc mới thất bại"
+        })
+    }
+}
