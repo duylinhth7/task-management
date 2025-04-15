@@ -79,19 +79,37 @@ module.exports.changeStatus = async (req, res) => {
 //PATCH /change-mutil
 module.exports.changeMutil = async (req, res) => {
     //destructuring - phá vỡ cấu trúc
-    const {ids, key, value} = req.body;
+    const { ids, key, value } = req.body;
     try {
-        switch(key) {
+        switch (key) {
             case "status":
                 await Tasks.updateMany({
-                    _id: {$in: ids}
+                    _id: { $in: ids }
                 }, {
                     status: value
                 })
                 res.json({
                     code: 200,
-                    message: "Thay  đổi trang thái thành công"
-                })
+                    message: "Thay  đổi trạng thái thành công"
+                });
+                break;
+            case "delete":
+                await Tasks.updateMany({
+                    _id: { $in: ids }
+                }, {
+                    deleted: true,
+                    deletedAt: new Date
+                });
+                res.json({
+                    code: 200,
+                    message: "Xóa thành công!"
+                });
+                break;
+            default:
+                res.json({
+                    code: 400,
+                    message: "Lỗi!"
+                });
         }
     } catch (error) {
         res.json({
@@ -105,7 +123,7 @@ module.exports.changeMutil = async (req, res) => {
 //[POST] /create
 module.exports.create = async (req, res) => {
     try {
-        if(req.body){
+        if (req.body) {
             const newTask = Tasks(req.body);
             await newTask.save();
             res.json({
@@ -119,13 +137,13 @@ module.exports.create = async (req, res) => {
             message: "Tạo công việc mới thất bại"
         })
     }
-} 
+}
 
 //[PATCH] /edit/:id
 module.exports.edit = async (req, res) => {
     try {
         const id = req.params.id;
-        if(req.body){
+        if (req.body) {
             await Tasks.updateOne({
                 _id: id
             }, req.body)
@@ -145,21 +163,21 @@ module.exports.edit = async (req, res) => {
 //[DELETE] /delete/:id
 module.exports.delete = async (req, res) => {
     try {
-    const id = req.params.id;
-    await Tasks.updateOne({
-        _id: id
-    }, {
-        deleted: true,
-        deletedAt: new Date
-    });
-    res.json({
-        code: 200,
-        message: "Xóa thành công!"
-    })
+        const id = req.params.id;
+        await Tasks.updateOne({
+            _id: id
+        }, {
+            deleted: true,
+            deletedAt: new Date
+        });
+        res.json({
+            code: 200,
+            message: "Xóa thành công!"
+        })
     } catch (error) {
         res.json({
             code: 400,
             message: "Xóa thất bại!"
-        }) 
+        })
     }
 }
