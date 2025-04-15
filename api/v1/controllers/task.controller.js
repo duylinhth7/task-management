@@ -74,3 +74,30 @@ module.exports.changeStatus = async (req, res) => {
         }
     }
 }
+
+
+//PATCH /change-mutil
+module.exports.changeMutil = async (req, res) => {
+    //destructuring - phá vỡ cấu trúc
+    const {ids, key, value} = req.body;
+    try {
+        switch(key) {
+            case "status":
+                await Tasks.updateMany({
+                    _id: {$in: ids}
+                }, {
+                    status: value
+                })
+                res.json({
+                    code: 200,
+                    message: "Thay  đổi trang thái thành công"
+                })
+        }
+    } catch (error) {
+        res.json({
+            code: 300,
+            message: "Thay  đổi trang thái không thành công"
+        })
+    }
+
+}
