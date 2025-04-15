@@ -102,7 +102,7 @@ module.exports.changeMutil = async (req, res) => {
 
 }
 
-//PATCH /create
+//[POST] /create
 module.exports.create = async (req, res) => {
     try {
         if(req.body){
@@ -117,6 +117,27 @@ module.exports.create = async (req, res) => {
         res.json({
             code: 400,
             message: "Tạo công việc mới thất bại"
+        })
+    }
+} 
+
+//[PATCH] /edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if(req.body){
+            await Tasks.updateOne({
+                _id: id
+            }, req.body)
+        };
+        res.json({
+            code: 200,
+            message: "Chỉnh sửa thành công"
+        })
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Chỉnh sửa thất bại"
         })
     }
 }
