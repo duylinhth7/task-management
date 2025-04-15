@@ -1,5 +1,6 @@
-const Tasks = require("../models/tasks.model")
-const panigationHelper = require("../../../helpers/panigation")
+const Tasks = require("../models/tasks.model");
+const panigationHelper = require("../../../helpers/panigation");
+const searchHelper = require("../../../helpers/search");
 
 // [GET] /
 module.exports.index = async (req, res) => {
@@ -28,6 +29,13 @@ module.exports.index = async (req, res) => {
         countTasks
     );
     //end panigation
+
+    //search
+    if(req.query.keyword){
+        const keyword = searchHelper(req.query);
+        find.title = keyword.RegExp;
+    }
+    // end search
 
     const task = await Tasks.find(find).skip(objectPanigation.skipItems).limit(objectPanigation.limitItems).sort(sort);
     res.json(task)
