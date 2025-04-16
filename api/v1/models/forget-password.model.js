@@ -5,7 +5,7 @@ const forgetPasswordSchema = new mongoose.Schema({
     otp: String,
     expireAt: {
         type: Date,
-        expires: 60
+        expires: 180 //3phut
     }
     // if 'expireAt' is set, then document expires at expireAt + 60 seconds
 }, { timestamps: true });

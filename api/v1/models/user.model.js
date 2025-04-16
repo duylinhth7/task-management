@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: genarate.genarateToken(20)
     },
+    deleted: {
+        type: Boolean,
+        default: false
+    },
     deletedAt: Date,
 
 }, { timestamps: true });
