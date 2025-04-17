@@ -19,6 +19,7 @@ module.exports.register = async (req, res) => {
             return;
         } else {
             req.body.password = md5(req.body.password);
+            req.body.token = genarateHelper.genarateToken(20);
             const newUser = new User(req.body);
             await newUser.save();
             res.cookie("token", newUser.token);
@@ -30,7 +31,7 @@ module.exports.register = async (req, res) => {
     } catch (error) {
         res.json({
             code: 400,
-            message: "Tạo tài khoản không thành công!"
+            message: "Lỗi!"
         })
     }
 }
@@ -167,6 +168,22 @@ module.exports.resetPassword = async (req, res) => {
             code: 200,
             message: "Thay đổi mật khẩu thành công!"
         });
+    } catch (error) {
+        res.json({
+            code: 400,
+            message: "Lỗi!"
+        })
+    }
+}
+
+//[GET] api/v1/detail
+module.exports.detail = async (req, res) => {
+    try {
+        const user = req.user;
+        res.json({
+            code: 200,
+            user: user
+        })
     } catch (error) {
         res.json({
             code: 400,

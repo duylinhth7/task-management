@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const genarate = require("../../../helpers/genarate")
 
 const userSchema = new mongoose.Schema({
 
@@ -10,10 +9,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "active"
     },
-    token: {
-        type: String,
-        default: genarate.genarateToken(20)
-    },
+    token: String,
     deleted: {
         type: Boolean,
         default: false
