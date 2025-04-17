@@ -7,8 +7,15 @@ module.exports = async (req, res, next) => {
             token: token,
             status: "active"
         }).select("-password");
-        req.user = user
-        next();
+        if (user) {
+            req.user = user
+            next();
+        } else{
+            res.json({
+                code: 400,
+                message: "TOKEN không hợp lệ!"
+            })
+        }
     } else {
         res.json({
             code: 400,

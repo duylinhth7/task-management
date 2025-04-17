@@ -6,6 +6,9 @@ const tasksSchema = new mongoose.Schema({
     title: String,
     status: String,
     content: String,
+    createdBy: String,
+    listUser: [],
+    parentId: String,
     timeStart: Date,
     timeFinish: Date,
     deleted: {

@@ -5,7 +5,11 @@ const searchHelper = require("../../../helpers/search");
 // [GET] /
 module.exports.index = async (req, res) => {
     const find = {
-        deleted: false
+        deleted: false,
+        $or: [
+            {createdBy: req.user.id },
+            {listUser: req.user.id}
+        ]
     };
     if (req.query.status) {
         find.status = req.query.status;
@@ -124,6 +128,7 @@ module.exports.changeMutil = async (req, res) => {
 module.exports.create = async (req, res) => {
     try {
         if (req.body) {
+            req.body.createdBy = req.user.id;
             const newTask = Tasks(req.body);
             await newTask.save();
             res.json({
